@@ -1,9 +1,8 @@
 package com.ywt.os.bll;
 
-import com.ywt.os.process.entity.FCFSModel;
+import com.ywt.os.process.entity.AFPFModel;
 import com.ywt.os.process.entity.Model;
 import com.ywt.os.process.entity.RFPFModel;
-import com.ywt.os.process.entity.SPFModel;
 
 /**
  * @author: YwT
@@ -34,18 +33,14 @@ public class ProcessBLL {
      */
     public static boolean isProcessComing(Model process, long currentTime) {
 
-
-        if (process instanceof FCFSModel) {
-            return ((FCFSModel)process).getComingTime() <= currentTime;
-        }
-
-        if (process instanceof SPFModel) {
-            return ((SPFModel)process).getComingTime() <= currentTime;
-        }
-
         if (process instanceof RFPFModel) {
             return ((RFPFModel)process).getComingTime() <= currentTime;
         }
+
+        if (process instanceof AFPFModel) {
+            return ((AFPFModel)process).getComingTime() <= currentTime;
+        }
+
         return false;
     }
 }
