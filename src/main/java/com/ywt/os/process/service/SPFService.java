@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author: YwT
+ * @description: 短进程优先
  * @create: 2018-11-24 21:54
  **/
 @Service

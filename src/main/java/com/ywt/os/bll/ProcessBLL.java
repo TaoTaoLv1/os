@@ -1,5 +1,10 @@
 package com.ywt.os.bll;
 
+import com.ywt.os.process.entity.FCFSModel;
+import com.ywt.os.process.entity.Model;
+import com.ywt.os.process.entity.RFPFModel;
+import com.ywt.os.process.entity.SPFModel;
+
 /**
  * @author: YwT
  * @description: 算法帮助类
@@ -19,5 +24,28 @@ public class ProcessBLL {
             }
         }
         return true;
+    }
+
+    /**
+     * 判断一个进程是否已经到达
+     * @param process 进程
+     * @param currentTime 当前时间
+     * @return 是否到达
+     */
+    public static boolean isProcessComing(Model process, long currentTime) {
+
+
+        if (process instanceof FCFSModel) {
+            return ((FCFSModel)process).getComingTime() <= currentTime;
+        }
+
+        if (process instanceof SPFModel) {
+            return ((SPFModel)process).getComingTime() <= currentTime;
+        }
+
+        if (process instanceof RFPFModel) {
+            return ((RFPFModel)process).getComingTime() <= currentTime;
+        }
+        return false;
     }
 }
