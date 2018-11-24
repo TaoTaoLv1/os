@@ -22,11 +22,11 @@ public class FCFSService implements ProcessSchedule {
     @Override
     public int execute(Model... processList) {
         if (null == processList || processList.length == 0) {
-            throw new NullPointerException(TAG + "> 进程为空");
+            throw new NullPointerException("进程为空");
         }
 
         if (!(processList instanceof FCFSModel[])) {
-            throw new IllegalArgumentException(TAG + "> 数据类型出错");
+            throw new IllegalArgumentException("数据类型出错");
         }
 
         FCFSModel[] fcfsModels = (FCFSModel[])processList;

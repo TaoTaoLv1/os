@@ -1,9 +1,7 @@
 package com.ywt.os.process.web;
 
-import com.ywt.os.process.entity.AFPFModel;
 import com.ywt.os.process.entity.Model;
 import com.ywt.os.process.service.AFPFService;
-import com.ywt.os.process.service.FCFSService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -24,18 +22,7 @@ public class AFPFController {
 
     @MessageMapping("/afpf")
     @SendTo("/topic/afpf")
-    //public int afpfSchedule(Model... processList){
-    public int afpfSchedule(String a){
-
-        AFPFModel[] processList = new AFPFModel[6];
-
-        processList[0] = new AFPFModel("A", 4, 0, 1);
-        processList[1] = new AFPFModel("B", 4, 1, 2);
-        processList[2] = new AFPFModel("C", 4, 3, 3);
-        processList[3] = new AFPFModel("D", 1, 5, 4);
-        processList[4] = new AFPFModel("E", 2, 14, 3);
-        processList[5] = new AFPFModel("F", 3, 15, 4);
-
+    public int afpfSchedule(Model... processList){
         return afpfService.execute(processList);
     }
 

@@ -1,6 +1,7 @@
 package com.ywt.os.process.service;
 
 import com.ywt.os.bll.ProcessBLL;
+import com.ywt.os.exception.UnknownException;
 import com.ywt.os.process.entity.AFPFModel;
 import com.ywt.os.process.entity.Model;
 import com.ywt.os.process.web.AFPFController;
@@ -29,11 +30,11 @@ public class AFPFService implements ProcessSchedule {
     @Override
     public int execute(Model... processList) {
         if (processList == null || processList.length == 0) {
-            throw new NullPointerException(TAG + "> 进程为空");
+            throw new NullPointerException("进程为空");
         }
 
         if (!(processList instanceof AFPFModel[])) {
-            throw new IllegalArgumentException(TAG + "> 数据类型出错");
+            throw new IllegalArgumentException("数据类型出错");
         }
 
         AFPFModel[] processes = (AFPFModel[]) processList;
@@ -45,8 +46,7 @@ public class AFPFService implements ProcessSchedule {
         while(!isDone(processes)) {
             index = getNextIndex(processes, currentTime);
             if (index > processes.length || index < 0) {
-                System.err.println(TAG + ">未知异常");
-                break;
+                throw new UnknownException("未知异常");
             }
 
             // 针对尚未初始化和已经运行结束的进程

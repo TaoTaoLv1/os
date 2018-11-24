@@ -1,7 +1,10 @@
 package com.ywt.os.exception;
 
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import com.ywt.os.message.ResponseMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
@@ -10,19 +13,25 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @create: 2018-11-24 19:52
  **/
 @RestControllerAdvice
-@ResponseBody
+@SendTo("/topic/error")
 public class RestHandlerExceptionController {
 
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
-    @ExceptionHandler(value = IllegalArgumentException.class)
-    public String IllegalArgument(Exception e){
-        return e.getMessage();
+    @MessageExceptionHandler
+    public ResponseMessage IllegalArgument(IllegalArgumentException e){
+        return ResponseMessage.newErrorInstance(e.getMessage());
     }
 
-    @ExceptionHandler(value = NullPointerException.class)
-    public String NullPointer(Exception e){
-        return e.getMessage();
+    @MessageExceptionHandler
+    public ResponseMessage NullPointer(NullPointerException e){
+        return ResponseMessage.newErrorInstance(e.getMessage());
     }
 
+    @MessageExceptionHandler
+    public ResponseMessage exception(UnknownException e){
+        return ResponseMessage.newErrorInstance(e.getMessage());
+    }
 
 }

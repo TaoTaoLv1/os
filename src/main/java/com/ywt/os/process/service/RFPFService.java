@@ -1,6 +1,7 @@
 package com.ywt.os.process.service;
 
 import com.ywt.os.bll.ProcessBLL;
+import com.ywt.os.exception.UnknownException;
 import com.ywt.os.process.entity.Model;
 import com.ywt.os.process.entity.RFPFModel;
 import com.ywt.os.process.web.RFPFController;
@@ -23,11 +24,11 @@ public class RFPFService implements ProcessSchedule {
     @Override
     public int execute(Model... processList) {
         if (processList == null || processList.length == 0) {
-            throw new NullPointerException(TAG + "> 进程为空");
+            throw new NullPointerException("进程为空");
         }
 
         if (!(processList instanceof RFPFModel[])) {
-            throw new IllegalArgumentException(TAG + "> 数据类型出错");
+            throw new IllegalArgumentException("数据类型出错");
         }
 
         RFPFModel[] processes = (RFPFModel[])processList;
@@ -57,8 +58,7 @@ public class RFPFService implements ProcessSchedule {
                 }
                 rfpfController.sendRFPF(currentProcess);
             } else {
-                System.out.println("未知异常");
-                break;
+                throw new UnknownException("未知异常");
             }
         }
 
