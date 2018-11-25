@@ -89,9 +89,11 @@ public class AFPFService implements ProcessSchedule {
                 }
             }
         }
+
         responseData.setTimeSum(currentTime);
         responseData.setAveTurnaroundTime(TTimeSum / processes.length);
         responseData.setAveTurnaroundWeightTime(TWTimeSum / processes.length);
+
         return responseData;
     }
 

@@ -1,7 +1,7 @@
 package com.ywt.os.process.web;
 
+import com.ywt.os.message.ResponseMessage;
 import com.ywt.os.process.entity.Model;
-import com.ywt.os.process.entity.RFPFModel;
 import com.ywt.os.process.service.RFPFService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -24,11 +24,11 @@ public class RFPFController {
 
     @MessageMapping("/rfpf")
     @SendTo("/topic/rfpf")
-    public int rfpfSchedule(Model... processList){
-        return rfpfService.execute(processList);
+    public ResponseMessage rfpfSchedule(Model... processList){
+        return ResponseMessage.newOkInstance(rfpfService.execute(processList));
     }
 
     public void sendRFPF(Model model){
-        messagingTemplate.convertAndSend("/topic/rfpf", model);
+        messagingTemplate.convertAndSend("/topic/rfpf", ResponseMessage.newOkInstance(model));
     }
 }

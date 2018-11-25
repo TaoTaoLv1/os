@@ -2,6 +2,7 @@ package com.ywt.os.process.service;
 
 import com.ywt.os.process.entity.FCFSModel;
 import com.ywt.os.process.entity.Model;
+import com.ywt.os.process.param.ResponseData;
 import com.ywt.os.process.web.FCFSController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class FCFSService implements ProcessSchedule {
     private FCFSController fcfsController;
 
     @Override
-    public int execute(Model... processList) {
+    public ResponseData execute(Model... processList) {
         if (null == processList || processList.length == 0) {
             throw new NullPointerException("进程为空");
         }
@@ -28,6 +29,10 @@ public class FCFSService implements ProcessSchedule {
         if (!(processList instanceof FCFSModel[])) {
             throw new IllegalArgumentException("数据类型出错");
         }
+
+        ResponseData responseData = new ResponseData();
+        int TTimeSum = 0;
+        int TWTimeSum = 0;
 
         FCFSModel[] fcfsModels = (FCFSModel[])processList;
         int runTimeSum = 0;
@@ -46,9 +51,17 @@ public class FCFSService implements ProcessSchedule {
             model.setFinishTime(runTimeSum);
             model.setTurnaroundTime(runTimeSum - model.getComingTime());
             model.setTurnaroundWeightTime(1.0 * model.getTurnaroundTime() / model.getTimeToNeed());
+
+            TTimeSum += model.getTurnaroundTime();
+            TWTimeSum += model.getTurnaroundWeightTime();
+
             fcfsController.sendFCFS(model);
         }
 
-        return runTimeSum;
+        responseData.setTimeSum(runTimeSum);
+        responseData.setAveTurnaroundTime(TTimeSum / fcfsModels.length);
+        responseData.setAveTurnaroundWeightTime(TWTimeSum / fcfsModels.length);
+
+        return responseData;
     }
 }

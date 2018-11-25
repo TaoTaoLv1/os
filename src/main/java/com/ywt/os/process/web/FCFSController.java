@@ -1,6 +1,8 @@
 package com.ywt.os.process.web;
 
+import com.ywt.os.message.ResponseMessage;
 import com.ywt.os.process.entity.Model;
+import com.ywt.os.process.param.ResponseData;
 import com.ywt.os.process.service.FCFSService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -23,12 +25,12 @@ public class FCFSController {
 
     @MessageMapping("/fcfs")
     @SendTo("/topic/fcfs")
-    public int FCFSSchedule(Model... processList){
-        return fcfsService.execute(processList);
+    public ResponseMessage FCFSSchedule(Model... processList){
+        return ResponseMessage.newOkInstance(fcfsService.execute(processList));
     }
 
     public void sendFCFS(Model model){
-        messagingTemplate.convertAndSend("/topic/fcfs", model);
+        messagingTemplate.convertAndSend("/topic/fcfs", ResponseMessage.newOkInstance(model));
     }
 
 }

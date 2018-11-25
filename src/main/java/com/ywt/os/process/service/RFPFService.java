@@ -4,6 +4,7 @@ import com.ywt.os.bll.ProcessBLL;
 import com.ywt.os.exception.UnknownException;
 import com.ywt.os.process.entity.Model;
 import com.ywt.os.process.entity.RFPFModel;
+import com.ywt.os.process.param.ResponseData;
 import com.ywt.os.process.web.RFPFController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class RFPFService implements ProcessSchedule {
     private RFPFController rfpfController;
 
     @Override
-    public int execute(Model... processList) {
+    public ResponseData execute(Model... processList) {
         if (processList == null || processList.length == 0) {
             throw new NullPointerException("进程为空");
         }
@@ -30,6 +31,10 @@ public class RFPFService implements ProcessSchedule {
         if (!(processList instanceof RFPFModel[])) {
             throw new IllegalArgumentException("数据类型出错");
         }
+
+        ResponseData responseData = new ResponseData();
+        int TTimeSum = 0;
+        int TWTimeSum = 0;
 
         RFPFModel[] processes = (RFPFModel[])processList;
         boolean[] runFlag = new boolean[processes.length];
@@ -50,7 +55,11 @@ public class RFPFService implements ProcessSchedule {
                 currentProcess.setTurnaroundTime(currentTime - currentProcess.getComingTime());
                 currentProcess.setTurnaroundWeightTime(1.0 * currentProcess.getTurnaroundTime() / currentProcess.getTimeToNeed());
 
+                TTimeSum += currentProcess.getTurnaroundTime();
+                TWTimeSum += currentProcess.getTurnaroundWeightTime();
+
                 runFlag[index] = true;
+
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
@@ -62,7 +71,11 @@ public class RFPFService implements ProcessSchedule {
             }
         }
 
-        return currentTime;
+        responseData.setTimeSum(currentTime);
+        responseData.setAveTurnaroundTime(TTimeSum / processes.length);
+        responseData.setAveTurnaroundWeightTime(TWTimeSum / processes.length);
+
+        return responseData;
     }
 
     /**

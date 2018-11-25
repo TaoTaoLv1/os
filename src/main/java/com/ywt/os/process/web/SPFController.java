@@ -1,7 +1,7 @@
 package com.ywt.os.process.web;
 
+import com.ywt.os.message.ResponseMessage;
 import com.ywt.os.process.entity.Model;
-import com.ywt.os.process.entity.SPFModel;
 import com.ywt.os.process.service.SPFService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -24,11 +24,11 @@ public class SPFController {
 
     @MessageMapping("/spf")
     @SendTo("/topic/spf")
-    public int spfSchedule(Model... processList){
-        return spfService.execute(processList);
+    public ResponseMessage spfSchedule(Model... processList){
+        return ResponseMessage.newOkInstance(spfService.execute(processList));
     }
 
     public void sendSPF(Model model){
-        messagingTemplate.convertAndSend("/topic/spf", model);
+        messagingTemplate.convertAndSend("/topic/spf", ResponseMessage.newOkInstance(model));
     }
 }

@@ -4,6 +4,7 @@ import com.ywt.os.bll.ProcessBLL;
 import com.ywt.os.exception.UnknownException;
 import com.ywt.os.process.entity.Model;
 import com.ywt.os.process.entity.SPFModel;
+import com.ywt.os.process.param.ResponseData;
 import com.ywt.os.process.web.SPFController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class SPFService implements ProcessSchedule {
     private SPFController spfController;
 
     @Override
-    public int execute(Model... processList) {
+    public ResponseData execute(Model... processList) {
         if (processList == null || processList.length == 0) {
             throw new NullPointerException("进程为空");
         }
@@ -30,6 +31,10 @@ public class SPFService implements ProcessSchedule {
         if (!(processList instanceof SPFModel[])) {
             throw new IllegalArgumentException("数据类型出错");
         }
+
+        ResponseData responseData = new ResponseData();
+        int TTimeSum = 0;
+        int TWTimeSum = 0;
 
         SPFModel[] processArray = (SPFModel[])processList;
         boolean[] runFlag = new boolean[processArray.length];
@@ -49,12 +54,16 @@ public class SPFService implements ProcessSchedule {
 
             runFlag[index] = true;
 
-            spfController.sendSPF(currentProcess);
+            TTimeSum += currentProcess.getTurnaroundTime();
+            TWTimeSum += currentProcess.getTurnaroundWeightTime();
+
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            spfController.sendSPF(currentProcess);
             index = getIndexMinRuntime(processArray, runFlag, runTimeSum);
             if (0 <= index && index < processArray.length) {
                 currentProcess = processArray[index];
@@ -63,7 +72,11 @@ public class SPFService implements ProcessSchedule {
             }
         }
 
-        return runTimeSum;
+        responseData.setTimeSum(runTimeSum);
+        responseData.setAveTurnaroundTime(TTimeSum / processArray.length);
+        responseData.setAveTurnaroundWeightTime(TWTimeSum / processArray.length);
+
+        return responseData;
     }
 
     /**
