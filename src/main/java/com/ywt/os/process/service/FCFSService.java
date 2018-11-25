@@ -21,7 +21,7 @@ public class FCFSService implements ProcessSchedule {
     private FCFSController fcfsController;
 
     @Override
-    public ResponseData execute(Model... processList) {
+    public ResponseData execute(Model... processList) throws InterruptedException {
         if (null == processList || processList.length == 0) {
             throw new NullPointerException("进程为空");
         }
@@ -37,11 +37,9 @@ public class FCFSService implements ProcessSchedule {
         FCFSModel[] fcfsModels = (FCFSModel[])processList;
         int runTimeSum = 0;
         for (FCFSModel model : fcfsModels) {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+            Thread.sleep(2000);
+
             if (runTimeSum < model.getComingTime()) {
                 runTimeSum = (int)model.getComingTime();
             }

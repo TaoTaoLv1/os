@@ -23,7 +23,7 @@ public class RFPFService implements ProcessSchedule {
     private RFPFController rfpfController;
 
     @Override
-    public ResponseData execute(Model... processList) {
+    public ResponseData execute(Model... processList) throws InterruptedException {
         if (processList == null || processList.length == 0) {
             throw new NullPointerException("进程为空");
         }
@@ -60,11 +60,8 @@ public class RFPFService implements ProcessSchedule {
 
                 runFlag[index] = true;
 
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Thread.sleep(2000);
+
                 rfpfController.sendRFPF(currentProcess);
             } else {
                 throw new UnknownException("未知异常");

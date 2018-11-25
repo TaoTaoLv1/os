@@ -25,7 +25,7 @@ public class FCFSController {
 
     @MessageMapping("/fcfs")
     @SendTo("/topic/fcfs")
-    public ResponseMessage FCFSSchedule(Model... processList){
+    public ResponseMessage FCFSSchedule(Model... processList) throws InterruptedException {
         return ResponseMessage.newOkInstance(fcfsService.execute(processList));
     }
 

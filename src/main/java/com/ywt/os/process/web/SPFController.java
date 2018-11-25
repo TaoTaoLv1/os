@@ -24,7 +24,7 @@ public class SPFController {
 
     @MessageMapping("/spf")
     @SendTo("/topic/spf")
-    public ResponseMessage spfSchedule(Model... processList){
+    public ResponseMessage spfSchedule(Model... processList) throws InterruptedException {
         return ResponseMessage.newOkInstance(spfService.execute(processList));
     }
 

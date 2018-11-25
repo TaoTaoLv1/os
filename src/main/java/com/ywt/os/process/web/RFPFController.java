@@ -24,7 +24,7 @@ public class RFPFController {
 
     @MessageMapping("/rfpf")
     @SendTo("/topic/rfpf")
-    public ResponseMessage rfpfSchedule(Model... processList){
+    public ResponseMessage rfpfSchedule(Model... processList) throws InterruptedException {
         return ResponseMessage.newOkInstance(rfpfService.execute(processList));
     }
 

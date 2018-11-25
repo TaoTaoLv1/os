@@ -23,7 +23,7 @@ public class SPFService implements ProcessSchedule {
     private SPFController spfController;
 
     @Override
-    public ResponseData execute(Model... processList) {
+    public ResponseData execute(Model... processList) throws InterruptedException {
         if (processList == null || processList.length == 0) {
             throw new NullPointerException("进程为空");
         }
@@ -57,11 +57,8 @@ public class SPFService implements ProcessSchedule {
             TTimeSum += currentProcess.getTurnaroundTime();
             TWTimeSum += currentProcess.getTurnaroundWeightTime();
 
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Thread.sleep(2000);
+
 
             spfController.sendSPF(currentProcess);
             index = getIndexMinRuntime(processArray, runFlag, runTimeSum);

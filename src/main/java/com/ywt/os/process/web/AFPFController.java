@@ -23,7 +23,7 @@ public class AFPFController {
 
     @MessageMapping("/afpf")
     @SendTo("/topic/afpf")
-    public ResponseMessage afpfSchedule(Model... processList){
+    public ResponseMessage afpfSchedule(Model... processList) throws InterruptedException {
         return ResponseMessage.newOkInstance(afpfService.execute(processList));
     }
 

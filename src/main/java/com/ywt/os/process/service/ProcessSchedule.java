@@ -12,5 +12,5 @@ public interface ProcessSchedule {
      * @param processList 进程列表
      * @return int 总时间
      */
-    ResponseData execute(Model... processList);
+    ResponseData execute(Model... processList) throws InterruptedException;
 }

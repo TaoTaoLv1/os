@@ -4,6 +4,7 @@ import com.ywt.os.message.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -32,6 +33,16 @@ public class RestHandlerExceptionController {
     @MessageExceptionHandler
     public ResponseMessage exception(UnknownException e){
         return ResponseMessage.newErrorInstance(e.getMessage());
+    }
+
+    @MessageExceptionHandler
+    public ResponseMessage interrupted(InterruptedException e){
+        return ResponseMessage.newErrorInstance("休眠线程出错");
+    }
+
+    @MessageExceptionHandler
+    public ResponseMessage methodArgumentNotValid(MethodArgumentNotValidException e){
+        return ResponseMessage.newErrorInstance("消息处理程序方法的未处理异常（参数不正确）");
     }
 
 }
