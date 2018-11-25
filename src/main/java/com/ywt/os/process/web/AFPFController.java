@@ -1,6 +1,8 @@
 package com.ywt.os.process.web;
 
+import com.ywt.os.message.ResponseMessage;
 import com.ywt.os.process.entity.Model;
+import com.ywt.os.process.param.ResponseData;
 import com.ywt.os.process.service.AFPFService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -22,11 +24,11 @@ public class AFPFController {
 
     @MessageMapping("/afpf")
     @SendTo("/topic/afpf")
-    public int afpfSchedule(Model... processList){
-        return afpfService.execute(processList);
+    public ResponseMessage afpfSchedule(Model... processList){
+        return ResponseMessage.newOkInstance(afpfService.execute(processList));
     }
 
     public void sendAFPF(Model model){
-        messagingTemplate.convertAndSend("/topic/afpf", model);
+        messagingTemplate.convertAndSend("/topic/afpf", ResponseMessage.newOkInstance(model));
     }
 }

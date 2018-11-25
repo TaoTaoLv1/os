@@ -4,6 +4,7 @@ import com.ywt.os.bll.ProcessBLL;
 import com.ywt.os.exception.UnknownException;
 import com.ywt.os.process.entity.AFPFModel;
 import com.ywt.os.process.entity.Model;
+import com.ywt.os.process.param.ResponseData;
 import com.ywt.os.process.web.AFPFController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class AFPFService implements ProcessSchedule {
     private AFPFController afpfController;
 
     @Override
-    public int execute(Model... processList) {
+    public ResponseData execute(Model... processList) {
         if (processList == null || processList.length == 0) {
             throw new NullPointerException("进程为空");
         }
@@ -36,6 +37,10 @@ public class AFPFService implements ProcessSchedule {
         if (!(processList instanceof AFPFModel[])) {
             throw new IllegalArgumentException("数据类型出错");
         }
+
+        ResponseData responseData = new ResponseData();
+        int TTimeSum = 0;
+        int TWTimeSum = 0;
 
         AFPFModel[] processes = (AFPFModel[]) processList;
         long[] comingTime = new long[processes.length];
@@ -72,6 +77,9 @@ public class AFPFService implements ProcessSchedule {
                     currentProcess.setTurnaroundTime(currentProcess.getFinishTime() - currentProcess.getComingTime());
                     currentProcess.setTurnaroundWeightTime(1.0 * currentProcess.getTurnaroundTime() / currentProcess.getTimeToNeed());
 
+                    TTimeSum += currentProcess.getTurnaroundTime();
+                    TWTimeSum += currentProcess.getTurnaroundWeightTime();
+
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
@@ -81,8 +89,10 @@ public class AFPFService implements ProcessSchedule {
                 }
             }
         }
-
-        return (int)currentTime;
+        responseData.setTimeSum(currentTime);
+        responseData.setAveTurnaroundTime(TTimeSum / processes.length);
+        responseData.setAveTurnaroundWeightTime(TWTimeSum / processes.length);
+        return responseData;
     }
 
     /**
