@@ -7,15 +7,33 @@ package com.ywt.os.storagemanagement.entity;
  **/
 public class Process {
 
-    private String pName;
+    private int pId;
     private int pSize;
+    private boolean isDealing; //是否分配
 
-    public String getpName() {
-        return pName;
+    public Process() {
     }
 
-    public void setpName(String pName) {
-        this.pName = pName;
+    public Process(int pId, int pSize, boolean isDealing) {
+        this.pId = pId;
+        this.pSize = pSize;
+        this.isDealing = isDealing;
+    }
+
+    public boolean isDealing() {
+        return isDealing;
+    }
+
+    public void setDealing(boolean dealing) {
+        isDealing = dealing;
+    }
+
+    public int getpId() {
+        return pId;
+    }
+
+    public void setpId(int pId) {
+        this.pId = pId;
     }
 
     public int getpSize() {
