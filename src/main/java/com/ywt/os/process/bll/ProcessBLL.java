@@ -1,4 +1,4 @@
-package com.ywt.os.bll;
+package com.ywt.os.process.bll;
 
 import com.ywt.os.process.entity.AFPFModel;
 import com.ywt.os.process.entity.Model;
