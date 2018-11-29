@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * @author: YwT
+ * @description：首次适应算法 FF
  * @create: 2018-11-28 18:02
  **/
 @Service

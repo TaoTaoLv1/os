@@ -17,25 +17,25 @@ import java.util.Random;
 @Service
 public class RAMProcessService {
 
-    private static final int RAM_MAX = 25;
-    private static final int PROCESS_RAM_MAX = 102;
+    private static final int RAM_MAX = 100;
+    private static final int PROCESS_RAM_MAX = 100;
 
     public RAMAndProcess init(){
         Random random = new Random();
-        int memorySize = random.nextInt(RAM_MAX);
+        int memorySize = random.nextInt(RAM_MAX) + 1;
         int add = 0;
 
         List<Process> processes; processes = new ArrayList<>();
         List<RAM> rams = new LinkedList<>();
 
-        rams.add(new RAM(add, memorySize, memorySize));
-        processes.add(new Process(0, random.nextInt(PROCESS_RAM_MAX), false));
+        rams.add(new RAM(add, memorySize, memorySize, true));
+        processes.add(new Process(0, random.nextInt(PROCESS_RAM_MAX) + 1, false));
 
         for (int i = 1; i < 10; i++){
-            processes.add(new Process(i, random.nextInt(PROCESS_RAM_MAX), false));
-            memorySize = random.nextInt(RAM_MAX);
+            processes.add(new Process(i, random.nextInt(PROCESS_RAM_MAX) + 1, false));
+            memorySize = random.nextInt(RAM_MAX) + 1;
             add += memorySize;
-            rams.add(new RAM(add, memorySize, memorySize));
+            rams.add(new RAM(add, memorySize, memorySize, false));
         }
 
         RAMAndProcess ramAndProcess = new RAMAndProcess();

@@ -14,15 +14,17 @@ public class RAM {
     private int startIndex;		//开始地址
     private int size;           //分区大小
     private int freeSize;      //剩余大小
+    private boolean StartPoint;  // 是否是起始指针
 
     public RAM() {
     }
 
-    public RAM(int startIndex, int size, int freeSize) {
+    public RAM(int startIndex, int size, int freeSize, boolean startPoint) {
         this.startIndex = startIndex;
         this.size = size;
         this.freeSize = freeSize;
         this.setProcessId(new ArrayList<>());
+        this.StartPoint = startPoint;
     }
 
     public int getFreeSize() {
@@ -55,5 +57,13 @@ public class RAM {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public boolean isStartPoint() {
+        return StartPoint;
+    }
+
+    public void setStartPoint(boolean startPoint) {
+        StartPoint = startPoint;
     }
 }
