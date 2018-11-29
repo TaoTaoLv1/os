@@ -9,20 +9,21 @@ import java.util.List;
 
 /**
  * @author: YwT
- * @description：首次适应算法 FF
- * @create: 2018-11-28 18:02
+ * @description: 最坏适应算法 WF
+ * @create: 2018-11-29 14:33
  **/
 @Service
-public class FFService extends DynamicStoreAlgorithmService {
+public class WFService extends DynamicStoreAlgorithmService {
 
     @Override
     public RAMAndProcess allocatePartition(RAMAndProcess ramAndProcess) {
-        List<Process> processes = ramAndProcess.getProcesses();
         List<RAM> rams = ramAndProcess.getRams();
+        List<Process> processes = ramAndProcess.getProcesses();
+
         for (Process process : processes) {
+            rams.sort((a, b) -> (a.getFreeSize() > b.getFreeSize() ? -1 : 1));
             super.judgeSize(rams, process);
         }
         return ramAndProcess;
     }
-
 }

@@ -13,7 +13,7 @@ import java.util.List;
  * @create: 2018-11-28 22:33
  **/
 @Service
-public class NFService implements DynamicStoreAlgorithmService {
+public class NFService extends DynamicStoreAlgorithmService {
 
 
     @Override
@@ -23,6 +23,7 @@ public class NFService implements DynamicStoreAlgorithmService {
 
         int startPoint = -1;
 
+        //找出标记
         for (RAM ram : rams) {
             if (ram.isStartPoint()){
                 startPoint = rams.indexOf(ram) + 1;
@@ -34,6 +35,7 @@ public class NFService implements DynamicStoreAlgorithmService {
         for (Process process : processes) {
             int start = judgeSize(rams, process, startPoint, rams.size());
             if (start != -1){
+                //替换 下次 开始查找内存位置
                 startPoint = start + 1;
                 continue;
             }else {
@@ -49,6 +51,7 @@ public class NFService implements DynamicStoreAlgorithmService {
     }
 
     public int judgeSize(List<RAM> rams, Process process,int start, int end){
+        //寻找合适的内存
         for (; start < end; start++){
             if (rams.get(start).getFreeSize() >= process.getpSize()){
                 rams.get(start).getProcessId().add(process.getpId());
