@@ -21,17 +21,7 @@ public class NFService extends DynamicStoreAlgorithmService {
         List<RAM> rams = ramAndProcess.getRams();
         List<Process> processes = ramAndProcess.getProcesses();
 
-        int startPoint = -1;
-
-        //找出标记
-        for (RAM ram : rams) {
-            if (ram.isStartPoint()){
-                startPoint = rams.indexOf(ram) + 1;
-                ram.setStartPoint(false);
-                break;
-            }
-        }
-
+        int startPoint = 0;
         for (Process process : processes) {
             int start = judgeSize(rams, process, startPoint, rams.size());
             if (start != -1){
