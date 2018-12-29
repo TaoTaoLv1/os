@@ -2,7 +2,6 @@ package com.ywt.os.process.web;
 
 import com.ywt.os.message.ResponseMessage;
 import com.ywt.os.process.entity.Model;
-import com.ywt.os.process.param.ResponseData;
 import com.ywt.os.process.service.FCFSService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;

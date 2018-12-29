@@ -1,7 +1,5 @@
 package com.ywt.os.process.param;
 
-import com.ywt.os.process.entity.Model;
-
 /**
  * @author: YwT
  * @description: 封装返回数据

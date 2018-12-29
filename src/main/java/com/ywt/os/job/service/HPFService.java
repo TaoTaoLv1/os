@@ -54,26 +54,13 @@ public class HPFService implements MethodService {
             if (Jobs.size() == 0) {
                 break;
             }
-            getRadio(Jobs, jobResponses);//每次循环时计算一次响应比
-            Job tem = getTask(Jobs, jobResponses);//从进程列表中得到一个最高响应比的任务
-            System.out.print(Common.tm.format(new Date()) + "第" + (int) tem.getPid() + "号进程开始运行==(R)==");
-//            try {
-//                Thread.sleep((long) tem.getServiceTime() * 1000);//模拟进程执行所需要的时间
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-            System.out.print(Common.tm.format(new Date()) + "进程结束运行(F)=====用时为" + (int) tem.getServiceTime() +
-                    "S-----");
-
-            //获取间隔时间
+            getRadio(Jobs, jobResponses);
+            Job tem = getTask(Jobs, jobResponses);
             double nowTime = System.nanoTime();
             double time = (nowTime - tem.getStartTime()) / 1000000000;
 
-            //求周转时间和带权周转时间
             tem.setWholeTime(time);
-            System.out.print("周转时间为：" + tem.getWholeTime() + "S  ");
             tem.setWeightWholeTime(tem.getWholeTime() / tem.getArrivalTime());
-            System.out.println("带权周转时间为：" + tem.getWholeTime() / tem.getArrivalTime() + "S");
             temp.add(tem);
             i--;
 
