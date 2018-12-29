@@ -8,6 +8,8 @@ import org.springframework.messaging.handler.annotation.support.MethodArgumentNo
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.FileNotFoundException;
+
 /**
  * @author: YwT
  * @description: 全局异常处理
@@ -16,9 +18,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @SendTo("/topic/error")
 public class RestHandlerExceptionController {
-
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
 
     @MessageExceptionHandler
     public ResponseMessage IllegalArgument(IllegalArgumentException e){
@@ -45,4 +44,18 @@ public class RestHandlerExceptionController {
         return ResponseMessage.newErrorInstance("消息处理程序方法的未处理异常（参数不正确）");
     }
 
+    @MessageExceptionHandler
+    public ResponseMessage repeat(RepeatException e) {
+        return ResponseMessage.newErrorInstance(e.getMessage());
+    }
+
+    @MessageExceptionHandler
+    public ResponseMessage arrayIndexOutOfBounds(ArrayIndexOutOfBoundsException e) {
+        return ResponseMessage.newErrorInstance(e.getMessage());
+    }
+
+    @MessageExceptionHandler
+    public ResponseMessage fileNotFound(FileNotFoundException e) {
+        return ResponseMessage.newErrorInstance(e.getMessage());
+    }
 }
